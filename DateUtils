@@ -1,0 +1,67 @@
+package com.zhiweicoding.haiyoutool.utils;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.TimeZone;
+
+/**
+ * @author by diaozhiwei on 2023/01/31.
+ * @email diaozhiwei2k@163.com
+ */
+public class DateTimeFormatUtil {
+
+    public static final DateTimeFormatter DATE_TIME_FULL = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+    public static final DateTimeFormatter DATE_TIME_ALL = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public static final DateTimeFormatter TIME_ALL = DateTimeFormatter.ofPattern("HH:mm:ss");
+    public static final DateTimeFormatter DATE_ALL = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static final DateTimeFormatter DATE_TIME_ALL_CLOSELY = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+
+    public static LocalDateTime dateToDT(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
+
+    public static Date dTToDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static long stringToLong(String dateStr, String pattern) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return stringToLong(dateStr, formatter);
+    }
+
+    public static long stringToLong(String dateStr, DateTimeFormatter pattern) {
+        LocalDateTime parse = LocalDateTime.parse(dateStr, pattern);
+        return dTToLong(parse);
+    }
+
+    public static LocalDateTime stringToDT(String dateStr, String pattern) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return stringToDT(dateStr, formatter);
+    }
+
+    public static LocalDateTime stringToDT(String dateStr, DateTimeFormatter pattern) {
+        LocalDateTime parse = LocalDateTime.parse(dateStr, pattern);
+        return parse.atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
+
+    public static LocalDateTime longToDT(long timestamp) {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), TimeZone.getDefault().toZoneId());
+    }
+
+    public static long dTToLong(LocalDateTime dt) {
+        return dt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
+    public static String dTToString(LocalDateTime dt, String pattern) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return dTToString(dt, formatter);
+    }
+
+    public static String dTToString(LocalDateTime dt, DateTimeFormatter pattern) {
+        return dt.format(pattern);
+    }
+
+}
